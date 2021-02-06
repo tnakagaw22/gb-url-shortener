@@ -1,12 +1,20 @@
 import React from "react";
 import { TextField, Paper, Button, Grid } from '@material-ui/core';
 
+import { post } from '../api/baseApi';
+
 const UrlInput = (props) => {
     const [url, setUrl] = React.useState('');
 
-    const handleAddUrl = (e) => {
+    const handleAddUrl = async (e) => {
         e.preventDefault();
 
+        try {
+            await post('links', { url });
+        }
+        catch (e) {
+            console.log(e);
+        }
         props.addLink({ short_url: url });
         setUrl('');
     }
