@@ -6,7 +6,8 @@ const UrlInput = (props) => {
 
     const handleAddUrl = (e) => {
         e.preventDefault();
-        console.log(url);
+
+        props.addLink({ short_url: url });
         setUrl('');
     }
 
