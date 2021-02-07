@@ -1,0 +1,17 @@
+[
+  {
+    "url": "test-1",
+    "slug": "test-1",
+    "short_url": "http://bely.me/test-1"
+  },
+  {
+    "url": "test-2",
+    "slug": "test-2",
+    "short_url": "http://bely.me/test-2"
+  },
+  {
+    "url": "test-3",
+    "slug": "test-3",
+    "short_url": "http://bely.me/test-3"
+  }
+]

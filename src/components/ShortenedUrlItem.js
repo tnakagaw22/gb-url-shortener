@@ -9,6 +9,7 @@ const ShortenedUrlItem = (props) => {
             <ListItem divider={props.divider}>
                 <ListItemText
                     primary={props.link.short_url}
+                    data-cy="shortened-url-item"
                     />
                 <ListItemSecondaryAction>
                     <IconButton aria-label="Delete URL" onClick={props.onDelete}>

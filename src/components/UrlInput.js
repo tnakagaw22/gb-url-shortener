@@ -29,6 +29,7 @@ const UrlInput = (props) => {
                                 placeholder="URL"
                                 value={url}
                                 onChange={e => setUrl(e.target.value)}
+                                data-cy="url-input"
                                 fullWidth
                                 autoFocus
                             />

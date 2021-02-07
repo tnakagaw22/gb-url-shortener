@@ -8,7 +8,9 @@ const ShortenedUrlList = (props) => {
     return (
         <>{props.links && props.links.length > 0 && (
             <Paper style={{ margin: 16 }}>
-                <List>
+                <List
+                    data-cy="shortened-url-list"
+                    >
                     {props.links.map((link, index) => (
                         <ShortenedUrlItem
                             key={index}
