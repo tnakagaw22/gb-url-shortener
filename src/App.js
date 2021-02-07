@@ -2,10 +2,13 @@ import React from "react";
 import useFetch from "./hooks/useFetch"
 
 import { remove } from './api/baseApi';
-import Layout from './components/Layout';
+// import Layout from './components/Layout';
 import UrlInput from './components/UrlInput'
-import ShortenedUrlList from './components/ShortenedUrlList'
+import ShortenedUrlTable from './components/ShortenedUrlTable'
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
+import Navigation from './components/Navigation';
 
 function App() {
 
@@ -30,15 +33,19 @@ function App() {
   }
 
   return (
-    <Layout>
-      <UrlInput
-        addLink={addLink}
-      />
-      <ShortenedUrlList
-        links={links}
-        removeLink={removeLink}
-      />
-    </Layout>
+    <>
+      <Navigation />
+      <Container>
+        <UrlInput addLink={addLink} />
+
+        <hr class="mt-3 mb-3"/>
+        
+        <ShortenedUrlTable
+          links={links}
+          removeLink={removeLink}
+        />
+      </Container>
+    </>
   );
 }
 
