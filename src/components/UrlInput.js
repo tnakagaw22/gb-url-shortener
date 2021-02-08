@@ -1,64 +1,92 @@
 import React from "react";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
+import ErrorSave from './ErrorSave';
 
 import { post } from '../api/baseApi';
 
 const UrlInput = (props) => {
     const [url, setUrl] = React.useState('');
     const [slug, setSlug] = React.useState('');
+    const [saving, setSaving] = React.useState(false);
+    const [errors, setErrors] = React.useState('');
 
     const handleAddUrl = async (e) => {
         e.preventDefault();
 
+        setSaving(true);
+        setErrors('');
+
         try {
             let response = await post('links', { url, slug });
-            props.addLink({ short_url: response.data.short_url });
+            props.addLink(response.data);
+
+            setUrl('');
+            setSlug('');
+
         }
-        catch (e) {
-            console.log(e);
+        catch (err) {
+            setErrors(err.response.data.errors);
         }
-        setUrl('');
-        setSlug('');
+
+        setSaving(false);
     }
 
     return (
         <>
             <Form onSubmit={handleAddUrl}>
-                <label htmlFor="basic-url">URL</label>
-                <InputGroup className="mb-3">
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id="url-prepend">
-                            http://bely.me/
-                        </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl id="basic-url" aria-describedby="url-prepend"
-                        value={url}
-                        onChange={e => setUrl(e.target.value)}
-                        data-cy="url-input"
-                        autoFocus
-                    />
-                </InputGroup>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <label htmlFor="url-input">URL</label>
+                        <InputGroup>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="url-prepend">
+                                    http://bely.me/
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl id="url-input" aria-describedby="url-prepend"
+                                value={url}
+                                onChange={e => setUrl(e.target.value)}
+                                data-cy="url-input"
+                                autoFocus
+                            />
+                        </InputGroup>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Form.Group controlId="form-slug">
+                            <Form.Label>Slug</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={slug}
+                                placeholder="Enter slug"
+                                onChange={e => setSlug(e.target.value)}
+                                data-cy="slug-input"
+                            />
 
-                <Form.Group controlId="form-slug">
-                    <Form.Label>Slug</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={slug}
-                        placeholder="Enter slug"
-                        onChange={e => setSlug(e.target.value)}
-                        data-cy="slug-input"
-                    />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                
+                <ErrorSave errors={errors} />
 
-                </Form.Group>
-                <Button
-                    onClick={handleAddUrl}
-                    data-cy="add-link-button"
-                >
-                    Add
-                    </Button>
+                <Row className='my-3 justify-content-md-center'>
+                    <Col md={4}>
+                        <Button
+                            block
+                            onClick={!saving ? handleAddUrl : null}
+                            disabled={saving}
+                            data-cy="add-link-button"
+                        >
+                            {saving ? 'Loading…' : 'Add'}
+                        </Button>
+                    </Col>
+                </Row>
+
             </Form>
         </>
     )

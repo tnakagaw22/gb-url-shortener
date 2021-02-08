@@ -9,7 +9,10 @@ const ShortenedUrlItem = (props) => {
                     data-cy="shortened-url-item"
                     >
                 <td>
-                    {props.link.short_url}
+                    {props.link.url}
+                </td>
+                <td>
+                    {props.link.slug}
                 </td>
                 <td>
                     <Trash onClick={props.onDelete} />

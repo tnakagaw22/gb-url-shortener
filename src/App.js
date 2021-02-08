@@ -16,9 +16,7 @@ function App() {
   const [links, setLinks, isLoading, error] = useFetch('links');
 
   const addLink = (link) => {
-    let newLink = { short_url: link.short_url };
-
-    setLinks([...links, newLink]);
+    setLinks([...links, link]);
   }
 
   const removeLink = async (index) => {
@@ -37,8 +35,6 @@ function App() {
       <Navigation />
       <Container>
         <UrlInput addLink={addLink} />
-
-        <hr class="mt-3 mb-3"/>
         
         <ShortenedUrlTable
           links={links}
