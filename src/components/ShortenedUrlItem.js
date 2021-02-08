@@ -15,7 +15,10 @@ const ShortenedUrlItem = (props) => {
                     {props.link.slug}
                 </td>
                 <td>
-                    <Trash onClick={props.onDelete} />
+                    <Trash 
+                    onClick={props.onDelete}
+                    data-cy="delete-url-icon"
+                     />
                 </td>
             </tr>
            
