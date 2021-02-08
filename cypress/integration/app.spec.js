@@ -1,6 +1,5 @@
 describe('The Home Page', () => {
     beforeEach(() => {
-        cy.visit('/');
 
         // load example.json fixture file and store
         // in the test context object
@@ -8,12 +7,23 @@ describe('The Home Page', () => {
     })
 
     it('successfully loads', () => {
-        cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
+        cy.visit('/');
+        // cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
+        cy.intercept('https://api.bely.me/links', {
+            statusCode: 200,
+            fixture: 'links.json',              
+            delayMs: 100
+        }).as('addLink');
+
+        cy.get('[data-cy=shortened-url-table-loading]').should('be.visible');
+        cy.wait('@addLink');
 
         cy.get('[data-cy=shortened-url-item]').should('be.visible');
+        cy.get('[data-cy=shortened-url-table-loading]').should('not.exist');
     })
 
     it('when adding new link, new link should be shown up in the link list', () => {
+        cy.visit('/');
         cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
         cy.wait('@getLinks');
 
@@ -37,6 +47,7 @@ describe('The Home Page', () => {
     })
 
     it('when adding new link fails with 422, it should show the error messages', () => {
+        cy.visit('/');
         cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
         cy.wait('@getLinks');
 

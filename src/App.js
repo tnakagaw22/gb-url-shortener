@@ -6,7 +6,7 @@ import { remove } from './api/baseApi';
 import UrlInput from './components/UrlInput'
 import ShortenedUrlTable from './components/ShortenedUrlTable'
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Navigation from './components/Navigation';
 
@@ -35,11 +35,20 @@ function App() {
       <Navigation />
       <Container>
         <UrlInput addLink={addLink} />
-        
-        <ShortenedUrlTable
-          links={links}
-          removeLink={removeLink}
-        />
+
+        {
+          isLoading ?
+            <div className='text-center' data-cy="shortened-url-table-loading">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+            :
+            <ShortenedUrlTable
+              links={links}
+              removeLink={removeLink}
+            />
+        }
       </Container>
     </>
   );
