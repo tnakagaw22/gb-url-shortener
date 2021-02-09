@@ -13,10 +13,15 @@ import { post } from '../api/baseApi';
 
 const UrlInput = (props) => {
     const [state, dispatch] = React.useContext(Context);
+    const urlInputRef = React.useRef(null);
     const [url, setUrl] = React.useState('');
     const [slug, setSlug] = React.useState('');
     const [saving, setSaving] = React.useState(false);
     const [errors, setErrors] = React.useState('');
+
+    React.useEffect(() => {
+        urlInputRef.current.focus();
+    }, [urlInputRef]);
 
     const handleAddUrl = async (e) => {
         e.preventDefault();
@@ -30,6 +35,7 @@ const UrlInput = (props) => {
 
             setUrl('');
             setSlug('');
+            urlInputRef.current.focus();
         }
         catch (err) {
             setErrors(err.response.data.errors);
@@ -53,8 +59,9 @@ const UrlInput = (props) => {
                             <FormControl id="url-input" aria-describedby="url-prepend"
                                 value={url}
                                 onChange={e => setUrl(e.target.value)}
+                                ref={urlInputRef}
                                 data-cy="url-input"
-                                autoFocus
+                                required
                             />
                         </InputGroup>
                     </Col>
