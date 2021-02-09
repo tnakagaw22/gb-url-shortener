@@ -1,5 +1,6 @@
 import React from "react";
 import { Trash } from 'react-bootstrap-icons';
+import { toast } from 'react-toastify';
 
 import { Context } from '../context/Store'
 import { remove } from '../api/baseApi';
@@ -7,13 +8,14 @@ import { remove } from '../api/baseApi';
 const ShortenedUrlItem = (props) => {
     const [state, dispatch] = React.useContext(Context);
     const deleteLink = async (index) => {
+        let removingLink = state.links[index];
         try {
-            let removingLink = state.links[index];
             await remove(`links/${removingLink.slug}`);
 
             dispatch({ type: 'REMOVE_LINK', payload: index });
         } catch (error) {
             console.log(error);
+            toast.error(`Failed to delete ${removingLink.slug}`);
         }
     }
 

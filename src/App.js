@@ -1,10 +1,11 @@
 import React from "react";
-import { get } from './api/baseApi';
+import Container from 'react-bootstrap/Container';
+import { ToastContainer } from 'react-toastify';
 
+import { get } from './api/baseApi';
 import { Context } from './context/Store'
 import UrlInput from './components/UrlInput'
 import ShortenedUrlTable from './components/ShortenedUrlTable'
-import Container from 'react-bootstrap/Container';
 
 import Navigation from './components/Navigation';
 
@@ -32,6 +33,7 @@ function App() {
         <UrlInput />
         <ShortenedUrlTable />
       </Container>
+      <ToastContainer />
     </>
   );
 }

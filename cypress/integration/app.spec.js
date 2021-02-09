@@ -87,4 +87,21 @@ describe('The Home Page', () => {
         cy.get('[data-cy=add-link-button]').not('be.disabled');
         cy.get('[data-cy=error-save-item]').should('be.visible');
     })
+
+    it('when removing a link fails, it should show error notification', () => {
+        cy.visit('/');
+        cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
+
+        cy.intercept('DELETE', 'https://api.bely.me/links/test-1', {
+            statusCode: 500,
+        }).as('deleteLink');
+
+        cy.contains('td', 'test-1')
+        .parent()
+        .within($tr => {
+            cy.get('[data-cy=delete-url-icon]').click();
+        });
+
+        cy.get('.Toastify__toast--error').should('be.visible');
+    })
 })
