@@ -22,6 +22,22 @@ describe('The Home Page', () => {
         cy.get('[data-cy=shortened-url-table-loading]').should('not.exist');
     })
 
+    it('fails to load links. show error', () => {
+        cy.visit('/');
+        // cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
+        cy.intercept('https://api.bely.me/links', {
+            statusCode: 500,
+            delayMs: 100
+        }).as('addLink');
+
+        cy.get('[data-cy=shortened-url-table-loading]').should('be.visible');
+        cy.wait('@addLink');
+
+        cy.get('[data-cy=shortened-url-list-error]').should('be.visible');
+        cy.get('[data-cy=shortened-url-item]').should('not.exist');
+        cy.get('[data-cy=shortened-url-table-loading]').should('not.exist');
+    })
+
     it('when adding new link, new link should be shown up in the link list', () => {
         cy.visit('/');
         cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');

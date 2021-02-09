@@ -8,9 +8,11 @@ import Button from 'react-bootstrap/Button';
 
 import ErrorSave from './ErrorSave';
 
+import { Context } from '../context/Store'
 import { post } from '../api/baseApi';
 
 const UrlInput = (props) => {
+    const [state, dispatch] = React.useContext(Context);
     const [url, setUrl] = React.useState('');
     const [slug, setSlug] = React.useState('');
     const [saving, setSaving] = React.useState(false);
@@ -24,11 +26,10 @@ const UrlInput = (props) => {
 
         try {
             let response = await post('links', { url, slug });
-            props.addLink(response.data);
+            dispatch({ type: 'ADD_LINK', payload: response.data });
 
             setUrl('');
             setSlug('');
-
         }
         catch (err) {
             setErrors(err.response.data.errors);
@@ -71,7 +72,7 @@ const UrlInput = (props) => {
                         </Form.Group>
                     </Col>
                 </Row>
-                
+
                 <ErrorSave errors={errors} />
 
                 <Row className='my-3 justify-content-md-center'>

@@ -1,54 +1,36 @@
 import React from "react";
-import useFetch from "./hooks/useFetch"
+import { get } from './api/baseApi';
 
-import { remove } from './api/baseApi';
-// import Layout from './components/Layout';
+import { Context } from './context/Store'
 import UrlInput from './components/UrlInput'
 import ShortenedUrlTable from './components/ShortenedUrlTable'
 import Container from 'react-bootstrap/Container';
-import Spinner from 'react-bootstrap/Spinner';
 
 import Navigation from './components/Navigation';
 
 function App() {
+  const [state, dispatch] = React.useContext(Context);
 
-  // const [links, setLinks] = React.useState([]);
-  const [links, setLinks, isLoading, error] = useFetch('links');
+  React.useEffect(async () => {
+    dispatch({ type: 'SET_LINKS_LOADING', payload: true });
 
-  const addLink = (link) => {
-    setLinks([...links, link]);
-  }
-
-  const removeLink = async (index) => {
     try {
-      let removingLink = links[index];
-      await remove(`links/${removingLink.slug}`);
-
-      setLinks(links.filter((link, i) => i !== index));
+      const response = await get('links');
+      dispatch({ type: 'SET_LINKS', payload: response.data });
     } catch (error) {
       console.log(error);
+      dispatch({ type: 'SET_LINKS_LOAD_ERROR', payload: 'Failed to load links' });
     }
-  }
+
+    dispatch({ type: 'SET_LINKS_LOADING', payload: false });
+  }, []);
 
   return (
     <>
       <Navigation />
       <Container>
-        <UrlInput addLink={addLink} />
-
-        {
-          isLoading ?
-            <div className='text-center' data-cy="shortened-url-table-loading">
-              <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-              </Spinner>
-            </div>
-            :
-            <ShortenedUrlTable
-              links={links}
-              removeLink={removeLink}
-            />
-        }
+        <UrlInput />
+        <ShortenedUrlTable />
       </Container>
     </>
   );
