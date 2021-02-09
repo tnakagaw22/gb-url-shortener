@@ -73,7 +73,7 @@ const UrlInput = (props) => {
 
                             <Form.Control.Feedback type="invalid">
                                 {errors.urlInput && errors.urlInput.type === "required" && (
-                                    'URL is required'
+                                    <span data-cy="url-input-required">URL is required</span>
                                 )}
                             </Form.Control.Feedback>
                         </InputGroup>
