@@ -16,9 +16,13 @@ export default (state, action) => {
                 links: action.payload
             }
         case 'ADD_LINK':
-            return {
-                ...state,
-                links: [...state.links, action.payload]
+            if (state.links.some(link => link.url === action.payload.url)) {
+                return state;
+            } else {
+                return {
+                    ...state,
+                    links: [...state.links, action.payload]
+                }
             }
         case 'REMOVE_LINK':
             return {

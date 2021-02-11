@@ -1,5 +1,5 @@
 describe('End to end tests', () => {
-    const testUrl = 'e2e-test-1';
+    const testUrl = 'http://test.com/e2e-test-1';
     const testSlug = 'e2e1';
 
     beforeEach(() => {

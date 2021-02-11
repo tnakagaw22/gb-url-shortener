@@ -46,14 +46,14 @@ describe('The Home Page', () => {
         cy.intercept('POST', 'https://api.bely.me/links', {
             statusCode: 200,
             body: {
-                "url": "test-4",
+                "url": "http://test.com/test-4",
                 "slug": "test-4",
                 "short_url": "http://bely.me/test-4"
             },
             delayMs: 100
         }).as('addLink');
 
-        cy.get('[data-cy=url-input]').type('test-4');
+        cy.get('[data-cy=url-input]').type('http://test.com/test-4');
         cy.get('[data-cy=add-link-button]').click();
         cy.get('[data-cy=add-link-button]').should('be.disabled');
         cy.wait('@addLink');
@@ -79,7 +79,7 @@ describe('The Home Page', () => {
             delayMs: 100
         }).as('addLink');
 
-        cy.get('[data-cy=url-input]').type('test-4');
+        cy.get('[data-cy=url-input]').type('http://test.com/test-3');
         cy.get('[data-cy=add-link-button]').click();
         cy.get('[data-cy=add-link-button]').should('be.disabled');
         cy.wait('@addLink');
@@ -94,6 +94,16 @@ describe('The Home Page', () => {
 
         cy.get('[data-cy=add-link-button]').click();
         cy.get('[data-cy=url-input-required]').should('be.visible');
+        
+    })
+
+    it('should show the url pattern error message when adding invalid url link', () => {
+        cy.visit('/');
+        cy.intercept('GET', 'https://api.bely.me/links', { fixture: 'links.json' }).as('getLinks');
+
+        cy.get('[data-cy=url-input]').type('test-4');
+        cy.get('[data-cy=add-link-button]').click();
+        cy.get('[data-cy=url-input-pattern]').should('be.visible');
         
     })
 
