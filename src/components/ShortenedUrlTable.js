@@ -32,19 +32,20 @@ const ShortenedUrlTable = (props) => {
         return (
             <>
                 {state.links.length > 0 &&
-                    <Table striped hover
+                    <Table striped hover responsive="md"
                         data-cy="shortened-url-list"
                     >
                         <thead>
                             <tr>
                                 <th>URL</th>
-                                <th>Slug</th>
+                                <th>Shortend URL</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {state.links.map((link, index) => (
                                 <ShortenedUrlItem
+                                    key={`uri-item-${index}`}
                                     index={index}
                                     link={link}
                                 />

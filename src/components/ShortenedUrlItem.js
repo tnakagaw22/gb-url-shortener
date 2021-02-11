@@ -29,7 +29,7 @@ const ShortenedUrlItem = (props) => {
                     {props.link.url}
                 </td>
                 <td>
-                    {props.link.slug}
+                    {props.link.short_url}
                 </td>
                 <td>
                     <Trash
