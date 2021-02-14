@@ -6,8 +6,8 @@ import Alert from 'react-bootstrap/Alert';
 import { Context } from '../context/Store'
 import ShortenedUrlItem from './ShortenedUrlItem';
 
-const ShortenedUrlTable = (props) => {
-    const [state, dispatch] = React.useContext(Context);
+const ShortenedUrlTable = () => {
+    const {state, dispatch} = React.useContext(Context);
 
     if (state.isLinkLoading) {
         return (

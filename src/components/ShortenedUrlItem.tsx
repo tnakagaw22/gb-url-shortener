@@ -2,12 +2,19 @@ import React from "react";
 import { Trash } from 'react-bootstrap-icons';
 import { toast } from 'react-toastify';
 
+import { Link } from '../models/Link';
 import { Context } from '../context/Store'
 import { remove } from '../api/baseApi';
 
-const ShortenedUrlItem = (props) => {
-    const [state, dispatch] = React.useContext(Context);
-    const deleteLink = async (index) => {
+type Props = {
+    index: number,
+    link: Link
+
+}
+
+const ShortenedUrlItem = ({ index, link }: Props) => {
+    const {state, dispatch} = React.useContext(Context);
+    const deleteLink = async () => {
         let removingLink = state.links[index];
         try {
             await remove(`links/${removingLink.slug}`);
@@ -22,18 +29,18 @@ const ShortenedUrlItem = (props) => {
 
     return (
         <>
-            <tr key={props.index}
+            <tr key={index}
                 data-cy="shortened-url-item"
             >
                 <td>
-                    {props.link.url}
+                    {link.url}
                 </td>
                 <td>
-                    {props.link.short_url}
+                    {link.short_url}
                 </td>
                 <td>
                     <Trash
-                        onClick={() => deleteLink(props.index)}
+                        onClick={deleteLink}
                         data-cy="delete-url-icon"
                     />
                 </td>

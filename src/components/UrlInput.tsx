@@ -8,14 +8,16 @@ import Button from 'react-bootstrap/Button';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 
+import { Link } from '../models/Link';
 import ErrorSave from './ErrorSave';
 
 import { Context } from '../context/Store'
 import { post } from '../api/baseApi';
 
-const UrlInput = (props) => {
-    const [state, dispatch] = React.useContext(Context);
-    const urlInputRef = React.useRef(null);
+
+const UrlInput = () => {
+    const {state, dispatch} = React.useContext(Context);
+    const urlInputRef = React.useRef<HTMLDivElement>(null);
     const { register, errors, handleSubmit } = useForm();
 
     const [url, setUrl] = React.useState('');
@@ -24,7 +26,7 @@ const UrlInput = (props) => {
     const [serverErrors, setServerErrors] = React.useState('');
 
     React.useEffect(() => {
-        urlInputRef.current.focus();
+        urlInputRef.current?.focus();
     }, [urlInputRef]);
 
     const handleAddUrl = async () => {
@@ -33,7 +35,7 @@ const UrlInput = (props) => {
         setServerErrors('');
 
         try {
-            let newLink = { url };
+            let newLink : Link = { url };
             if (slug) {
                 newLink.slug = slug;
             }
@@ -43,7 +45,7 @@ const UrlInput = (props) => {
 
             setUrl('');
             setSlug('');
-            urlInputRef.current.focus();
+            urlInputRef.current?.focus();
         }
         catch (err) {
             setServerErrors(err.response.data.errors);
@@ -65,12 +67,11 @@ const UrlInput = (props) => {
                                 name="urlInput"
                                 placeholder="Enter URL (ex: http://test.com)"
                                 onChange={e => setUrl(e.target.value)}
-                                ref={(e) => {
+                                ref={(e:HTMLInputElement) => {
                                     register(e, {
                                         required: true,
                                         pattern: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
                                     });
-                                    urlInputRef.current = e;
                                 }}
                                 isInvalid={!!errors.urlInput}
                                 data-cy="url-input"
@@ -123,7 +124,7 @@ const UrlInput = (props) => {
                         <Button
                             block
                             type="submit"
-                            onClick={!saving ? handleSubmit(handleAddUrl) : null}
+                            onClick={!saving ? handleSubmit(handleAddUrl) : undefined}
                             disabled={saving}
                             data-cy="add-link-button"
                         >
